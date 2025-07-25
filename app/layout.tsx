@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import "@radix-ui/themes/styles.css";
-import "./globals.css";
+import '@radix-ui/themes/styles.css';
+import './globals.css';
 
-import { Inter } from "next/font/google";
+import { Inter } from 'next/font/google';
 
-import { Theme, ThemePanel } from "@radix-ui/themes";
+import { Theme, ThemePanel } from '@radix-ui/themes';
 
-import NavBar from "./NavBar";
+import NavBar from './NavBar';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -28,7 +28,7 @@ export default function RootLayout({
       <body className={`${inter.variable} antialiased`}>
         <Theme accentColor="violet">
           <NavBar />
-          <main>{children}</main>
+          <main className="px-4">{children}</main>
           {/* <ThemePanel /> */}
         </Theme>
       </body>

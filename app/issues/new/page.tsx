@@ -47,7 +47,7 @@ const NewIssuePage = () => {
   });
 
   return (
-    <div className=" max-w-xl px-4 space-y-3">
+    <div className=" max-w-xl space-y-3">
       {error && (
         <Callout.Root color="red">
           <Callout.Text>{error}</Callout.Text>
