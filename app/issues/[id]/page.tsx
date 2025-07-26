@@ -1,12 +1,9 @@
-import delay from "delay";
-import { notFound } from "next/navigation";
-import React from "react";
-import ReactMarkdown from "react-markdown";
+import { notFound } from 'next/navigation';
+import ReactMarkdown from 'react-markdown';
 
-import prisma from "@/prisma/client";
-import { Card, Flex, Heading, Text } from "@radix-ui/themes";
-
-import IssueStatusBadge from "../../components/IssueStatusBadge";
+import { IssueStatusBadge } from '@/app/components';
+import prisma from '@/prisma/client';
+import { Card, Flex, Heading, Text } from '@radix-ui/themes';
 
 const IssueDetailPage = async ({ params }: { params: { id: string } }) => {
   const { id } = await params;
