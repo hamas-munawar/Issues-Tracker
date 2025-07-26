@@ -1,11 +1,12 @@
-import { notFound } from 'next/navigation';
-import React from 'react';
-import ReactMarkdown from 'react-markdown';
+import delay from "delay";
+import { notFound } from "next/navigation";
+import React from "react";
+import ReactMarkdown from "react-markdown";
 
-import prisma from '@/prisma/client';
-import { Card, Flex, Heading, Text } from '@radix-ui/themes';
+import prisma from "@/prisma/client";
+import { Card, Flex, Heading, Text } from "@radix-ui/themes";
 
-import IssueStatusBadge from '../../components/IssueStatusBadge';
+import IssueStatusBadge from "../../components/IssueStatusBadge";
 
 const IssueDetailPage = async ({ params }: { params: { id: string } }) => {
   const { id } = await params;
@@ -15,7 +16,7 @@ const IssueDetailPage = async ({ params }: { params: { id: string } }) => {
   if (!issue) notFound();
 
   return (
-    <Flex direction="column" gapY="2">
+    <Flex direction="column" gapY="2" className="max-w-xl">
       <Heading>{issue.title}</Heading>
       <Flex gap="3">
         <IssueStatusBadge status={issue.status} />
