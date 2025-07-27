@@ -6,7 +6,7 @@ import prisma from "@/prisma/client";
 import IssueForm from "../../_components/IssueForm";
 
 interface Props {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 const EditIssuePage = async ({ params }: Props) => {
