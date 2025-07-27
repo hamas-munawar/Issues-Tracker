@@ -1,9 +1,9 @@
-import { notFound } from "next/navigation";
-import React from "react";
+import { notFound } from 'next/navigation';
+import React from 'react';
 
-import prisma from "@/prisma/client";
+import prisma from '@/prisma/client';
 
-import IssueForm from "../../_components/IssueForm";
+import IssueForm from '../../_components/IssueForm';
 
 interface Props {
   params: Promise<{ id: string }>;

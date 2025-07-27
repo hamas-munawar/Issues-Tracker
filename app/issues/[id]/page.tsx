@@ -6,7 +6,11 @@ import { Box, Grid } from '@radix-ui/themes';
 import EditIssueButton from './EditIssueButton';
 import IssueDetail from './IssueDetail';
 
-const IssueDetailPage = async ({ params }: { params: Promise<{ id: string }> }) => {
+const IssueDetailPage = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) => {
   const { id } = await params;
 
   const issue = await prisma.issue.findUnique({ where: { id: parseInt(id) } });
