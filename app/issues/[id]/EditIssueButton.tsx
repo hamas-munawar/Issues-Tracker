@@ -1,10 +1,10 @@
-import Link from 'next/link';
-import React from 'react';
+import Link from "next/link";
+import React from "react";
 
-import { Pencil2Icon } from '@radix-ui/react-icons';
-import { Button } from '@radix-ui/themes';
+import { Pencil2Icon } from "@radix-ui/react-icons";
+import { Button } from "@radix-ui/themes";
 
-const EditIssueButton = ({ id }: { id: number }) => {
+const EditIssueButton = ({ issueId: id }: { issueId: number }) => {
   return (
     <Button>
       <Pencil2Icon />
