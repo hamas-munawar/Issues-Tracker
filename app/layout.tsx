@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 
 import { Container, Theme } from "@radix-ui/themes";
 
+import AuthProvider from "./auth/Provider";
 import NavBar from "./NavBar";
 
 import type { Metadata } from "next";
@@ -26,13 +27,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} antialiased`}>
-        <Theme accentColor="violet">
-          <NavBar />
-          <main className="px-4">
-            <Container>{children}</Container>
-          </main>
-          {/* <ThemePanel /> */}
-        </Theme>
+        <AuthProvider>
+          <Theme accentColor="violet">
+            <NavBar />
+            <main className="px-4">
+              <Container>{children}</Container>
+            </main>
+            {/* <ThemePanel /> */}
+          </Theme>
+        </AuthProvider>
       </body>
     </html>
   );
