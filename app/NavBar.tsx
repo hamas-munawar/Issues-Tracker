@@ -19,8 +19,6 @@ import {
 const NavBar = () => {
   const currentPath = usePathname();
 
-  const { status, data: session } = useSession();
-
   const links = [
     { label: "Dashboard", href: "/" },
     { label: "Issues", href: "/issues" },
@@ -34,50 +32,9 @@ const NavBar = () => {
             <Link href="/">
               <AiFillBug />
             </Link>
-            <ul className="flex gap-x-4">
-              {links.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    className={classNames(
-                      {
-                        "text-zinc-900": link.href === currentPath,
-                        "text-zinc-500": link.href !== currentPath,
-                      },
-                      "text-zinc-800 transition-colors"
-                    )}
-                    href={link.href}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <NavLinks />
           </Flex>
-          <Box>
-            {status === "authenticated" && (
-              <DropdownMenu.Root>
-                <DropdownMenu.Trigger>
-                  <Avatar
-                    src={session.user!.image!}
-                    fallback="?"
-                    size="2"
-                    radius="full"
-                    className="cursor-pointer"
-                  />
-                </DropdownMenu.Trigger>
-                <DropdownMenu.Content>
-                  <Text size="1">{session.user?.email}</Text>
-                  <DropdownMenu.Separator />
-                  <Button>
-                    <Link href="/api/auth/signout">Logout</Link>
-                  </Button>
-                </DropdownMenu.Content>
-              </DropdownMenu.Root>
-            )}
-            {status === "unauthenticated" && (
-              <Link href="/api/auth/signin">Sign In</Link>
-            )}
-          </Box>
+          <AuthStatus />
         </Flex>
       </Container>
     </nav>
@@ -85,3 +42,65 @@ const NavBar = () => {
 };
 
 export default NavBar;
+
+const AuthStatus = () => {
+  const { status, data: session } = useSession();
+
+  if (status === "loading") return null;
+
+  if (status === "unauthenticated")
+    return (
+      <Link className="nav-link" href="/api/auth/signin">
+        Log In
+      </Link>
+    );
+
+  return (
+    <Box>
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger>
+          <Avatar
+            src={session!.user!.image!}
+            fallback="?"
+            size="2"
+            radius="full"
+            className="cursor-pointer"
+          />
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <Text size="1">{session!.user?.email}</Text>
+          <DropdownMenu.Separator />
+          <Button>
+            <Link href="/api/auth/signout">Logout</Link>
+          </Button>
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
+    </Box>
+  );
+};
+
+const NavLinks = () => {
+  const currentPath = usePathname();
+
+  const links = [
+    { label: "Dashboard", href: "/" },
+    { label: "Issues", href: "/issues" },
+  ];
+
+  return (
+    <ul className="flex gap-x-4">
+      {links.map((link) => (
+        <li key={link.href}>
+          <Link
+            className={classNames("nav-link", {
+              "!text-zinc-900": link.href === currentPath,
+            })}
+            href={link.href}
+          >
+            {link.label}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
+};
