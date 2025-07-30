@@ -1,20 +1,13 @@
 "use client";
 
-import classNames from "classnames";
-import { useSession } from "next-auth/react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { AiFillBug } from "react-icons/ai";
+import classNames from 'classnames';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { AiFillBug } from 'react-icons/ai';
 
-import {
-  Avatar,
-  Box,
-  Button,
-  Container,
-  DropdownMenu,
-  Flex,
-  Text,
-} from "@radix-ui/themes";
+import { Skeleton } from '@/app/components';
+import { Avatar, Button, Container, DropdownMenu, Flex, Text } from '@radix-ui/themes';
 
 const NavBar = () => {
   const currentPath = usePathname();
@@ -25,16 +18,18 @@ const NavBar = () => {
   ];
 
   return (
-    <nav className="border-b mb-5 px-5 py-3">
+    <nav className="border-b mb-5 px-5 py-1">
       <Container>
         <Flex justify="between">
-          <Flex align="center" gap="3">
+          <Flex align="center" gap="3" className="py-2">
             <Link href="/">
               <AiFillBug />
             </Link>
             <NavLinks />
           </Flex>
-          <AuthStatus />
+          <Flex align="center">
+            <AuthStatus />
+          </Flex>
         </Flex>
       </Container>
     </nav>
@@ -46,7 +41,7 @@ export default NavBar;
 const AuthStatus = () => {
   const { status, data: session } = useSession();
 
-  if (status === "loading") return null;
+  if (status === "loading") return <Skeleton width="3rem" />;
 
   if (status === "unauthenticated")
     return (
@@ -56,26 +51,24 @@ const AuthStatus = () => {
     );
 
   return (
-    <Box>
-      <DropdownMenu.Root>
-        <DropdownMenu.Trigger>
-          <Avatar
-            src={session!.user!.image!}
-            fallback="?"
-            size="2"
-            radius="full"
-            className="cursor-pointer"
-          />
-        </DropdownMenu.Trigger>
-        <DropdownMenu.Content>
-          <Text size="1">{session!.user?.email}</Text>
-          <DropdownMenu.Separator />
-          <Button>
-            <Link href="/api/auth/signout">Logout</Link>
-          </Button>
-        </DropdownMenu.Content>
-      </DropdownMenu.Root>
-    </Box>
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger>
+        <Avatar
+          src={session!.user!.image!}
+          fallback="?"
+          size="2"
+          radius="full"
+          className="cursor-pointer"
+        />
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Content>
+        <Text size="1">{session!.user?.email}</Text>
+        <DropdownMenu.Separator />
+        <Button>
+          <Link href="/api/auth/signout">Logout</Link>
+        </Button>
+      </DropdownMenu.Content>
+    </DropdownMenu.Root>
   );
 };
 
