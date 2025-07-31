@@ -6,7 +6,11 @@
     "dev": "next dev --turbopack",
     "build": "next build --no-lint",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:generate": "bun prisma generate",
+    "db:push": "bun prisma db push",
+    "db:migrate": "bun prisma migrate dev",
+    "db:studio": "bun prisma studio"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.10.0",
@@ -20,7 +24,7 @@
     "delay": "^6.0.0",
     "next": "15.4.3",
     "next-auth": "^4.24.11",
-    "prisma": "^6.12.0",
+    "prisma": "^6.13.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-hook-form": "^7.61.1",
