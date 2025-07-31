@@ -1,13 +1,20 @@
 "use client";
 
-import classNames from 'classnames';
-import { useSession } from 'next-auth/react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { AiFillBug } from 'react-icons/ai';
+import classNames from "classnames";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { AiFillBug } from "react-icons/ai";
 
-import { Skeleton } from '@/app/components';
-import { Avatar, Button, Container, DropdownMenu, Flex, Text } from '@radix-ui/themes';
+import { Skeleton } from "@/app/components";
+import {
+  Avatar,
+  Button,
+  Container,
+  DropdownMenu,
+  Flex,
+  Text,
+} from "@radix-ui/themes";
 
 const NavBar = () => {
   const currentPath = usePathname();
@@ -59,6 +66,7 @@ const AuthStatus = () => {
           size="2"
           radius="full"
           className="cursor-pointer"
+          referrerPolicy="no-referrer"
         />
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
