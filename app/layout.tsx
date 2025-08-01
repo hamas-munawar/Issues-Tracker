@@ -7,6 +7,7 @@ import { Container, Theme } from "@radix-ui/themes";
 
 import AuthProvider from "./auth/Provider";
 import NavBar from "./NavBar";
+import QueryClientProvider from "./QueryClientProvider";
 
 import type { Metadata } from "next";
 const inter = Inter({
@@ -26,17 +27,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} antialiased`}>
-        <AuthProvider>
-          <Theme accentColor="violet">
-            <NavBar />
-            <main className="px-4">
-              <Container>{children}</Container>
-            </main>
-            {/* <ThemePanel /> */}
-          </Theme>
-        </AuthProvider>
-      </body>
+      <QueryClientProvider>
+        <body className={`${inter.variable} antialiased`}>
+          <AuthProvider>
+            <Theme accentColor="violet">
+              <NavBar />
+              <main className="px-4">
+                <Container>{children}</Container>
+              </main>
+              {/* <ThemePanel /> */}
+            </Theme>
+          </AuthProvider>
+        </body>
+      </QueryClientProvider>
     </html>
   );
 }
