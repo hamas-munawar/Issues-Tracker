@@ -4,18 +4,15 @@ import React, { useEffect, useState } from "react";
 
 import { User } from "@/app/generated/prisma";
 import { Select } from "@radix-ui/themes";
+import { useQuery } from "@tanstack/react-query";
 
 const AssigneeSelect = () => {
-  const [users, setUsers] = useState<User[]>([]);
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const { data } = await axios.get<User[]>("/api/users");
-      setUsers(data);
-    };
-
-    fetchUsers();
-  }, []);
+  const { data: users } = useQuery<User[]>({
+    queryKey: ["users"],
+    queryFn: () => axios.get("/api/users").then((res) => res.data),
+    staleTime: 60 * 1000, // 60s
+    retry: 3,
+  });
 
   return (
     <Select.Root defaultValue="hamas">
@@ -24,7 +21,7 @@ const AssigneeSelect = () => {
         <Select.Group>
           <Select.Label>Suggestions</Select.Label>
           <Select.Separator />
-          {users.map((user) => (
+          {users?.map((user) => (
             <Select.Item key={user.id} value={user.id}>
               {user.name}
             </Select.Item>
