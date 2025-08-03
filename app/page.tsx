@@ -5,11 +5,5 @@ export default function Home({
 }: {
   searchParams: { page: string };
 }) {
-  return (
-    <Pagination
-      totalCount={100}
-      currentPage={parseInt(searchParams.page)}
-      pageSize={10}
-    />
-  );
+  return <h1>Dashboard</h1>;
 }

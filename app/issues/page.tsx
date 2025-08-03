@@ -1,12 +1,13 @@
-import NextLink from 'next/link';
+import NextLink from "next/link";
 
-import { IssueStatusBadge, Link } from '@/app/components';
-import prisma from '@/prisma/client';
-import { ArrowUpIcon } from '@radix-ui/react-icons';
-import { Flex, Table } from '@radix-ui/themes';
+import { IssueStatusBadge, Link } from "@/app/components";
+import prisma from "@/prisma/client";
+import { ArrowUpIcon } from "@radix-ui/react-icons";
+import { Flex, Table } from "@radix-ui/themes";
 
-import { Issue, Status } from '../generated/prisma';
-import IssueActions from './IssueActions';
+import Pagination from "../components/Pagination";
+import { Issue, Status } from "../generated/prisma";
+import IssueActions from "./IssueActions";
 
 const columns: { label: string; value: keyof Issue; className?: string }[] = [
   { label: "Issues", value: "title" },
@@ -21,7 +22,7 @@ const columns: { label: string; value: keyof Issue; className?: string }[] = [
 const IssuesPage = async ({
   searchParams,
 }: {
-  searchParams: { status: Status; orderBy: keyof Issue };
+  searchParams: { status: Status; orderBy: keyof Issue; page: string };
 }) => {
   searchParams = await searchParams;
 
@@ -29,15 +30,23 @@ const IssuesPage = async ({
   const status = statuses.includes(searchParams.status)
     ? searchParams.status
     : undefined;
+  const where = { status };
 
   const orderBy = columns.map((col) => col.value).includes(searchParams.orderBy)
     ? { [searchParams.orderBy]: "asc" }
     : undefined;
 
+  const page = parseInt(searchParams.page) || 1;
+  const pageSize = 10;
+
   const issues = await prisma.issue.findMany({
-    where: { status },
+    where,
     orderBy,
+    skip: (page - 1) * pageSize,
+    take: pageSize,
   });
+
+  const totalCount = await prisma.issue.count({ where });
 
   return (
     <div>
@@ -81,6 +90,11 @@ const IssuesPage = async ({
           ))}
         </Table.Body>
       </Table.Root>
+      <Pagination
+        currentPage={page}
+        pageSize={pageSize}
+        totalCount={totalCount}
+      />
     </div>
   );
 };

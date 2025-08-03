@@ -16,7 +16,7 @@ interface Props {
 }
 
 const Pagination = ({ totalCount, currentPage, pageSize }: Props) => {
-  const totalPages = totalCount / pageSize;
+  const totalPages = Math.ceil(totalCount / pageSize);
 
   const router = useRouter();
   const searchParams = useSearchParams();
