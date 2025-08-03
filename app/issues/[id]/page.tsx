@@ -10,11 +10,11 @@ import DeleteIssueButton from "./DeleteIssueButton";
 import EditIssueButton from "./EditIssueButton";
 import IssueDetail from "./IssueDetail";
 
-const IssueDetailPage = async ({
-  params,
-}: {
+interface Props {
   params: Promise<{ id: string }>;
-}) => {
+}
+
+const IssueDetailPage = async ({ params }: Props) => {
   const session = await getServerSession(authOptions);
 
   const { id } = await params;
@@ -40,5 +40,15 @@ const IssueDetailPage = async ({
     </Grid>
   );
 };
+
+export async function generateMetadata({ params }: Props) {
+  const { id } = await params;
+  const issue = await prisma.issue.findUnique({ where: { id: parseInt(id) } });
+
+  return {
+    title: `Issue - ${issue?.title}`,
+    description: `Description of Issue ${issue?.title}`,
+  };
+}
 
 export default IssueDetailPage;

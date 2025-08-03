@@ -1,3 +1,5 @@
+import { Metadata } from "next";
+
 import prisma from "@/prisma/client";
 import { Flex } from "@radix-ui/themes";
 
@@ -45,5 +47,10 @@ const IssuesPage = async ({ searchParams }: { searchParams: IssuesQuery }) => {
 };
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Issue Tracker - Issues List",
+  description: "View all Issues of Project",
+};
 
 export default IssuesPage;
