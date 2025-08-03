@@ -7,9 +7,9 @@ import { IssueStatusBadge, Link } from "../components";
 import { Issue, Status } from "../generated/prisma";
 
 export interface IssuesQuery {
-  status: Status;
-  orderBy: keyof Issue;
-  page: string;
+  status?: Status;
+  orderBy?: keyof Issue;
+  page?: string;
 }
 
 interface Props {
