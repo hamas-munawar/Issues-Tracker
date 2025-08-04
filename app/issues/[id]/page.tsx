@@ -1,32 +1,59 @@
-import delay from "delay";
+import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
-import React from "react";
-import ReactMarkdown from "react-markdown";
+import { cache } from "react";
 
+import authOptions from "@/app/auth/authOptions";
 import prisma from "@/prisma/client";
-import { Card, Flex, Heading, Text } from "@radix-ui/themes";
+import { Box, Flex, Grid } from "@radix-ui/themes";
 
-import IssueStatusBadge from "../../components/IssueStatusBadge";
+import AssigneeSelect from "./AssigneeSelect";
+import DeleteIssueButton from "./DeleteIssueButton";
+import EditIssueButton from "./EditIssueButton";
+import IssueDetail from "./IssueDetail";
 
-const IssueDetailPage = async ({ params }: { params: { id: string } }) => {
+interface Props {
+  params: Promise<{ id: string }>;
+}
+
+const fetchIssue = cache((IssueId: number) =>
+  prisma.issue.findUnique({ where: { id: IssueId } })
+);
+
+const IssueDetailPage = async ({ params }: Props) => {
+  const session = await getServerSession(authOptions);
+
   const { id } = await params;
 
-  const issue = await prisma.issue.findUnique({ where: { id: parseInt(id) } });
+  const issue = await fetchIssue(parseInt(id));
 
   if (!issue) notFound();
 
   return (
-    <Flex direction="column" gapY="2" className="max-w-xl">
-      <Heading>{issue.title}</Heading>
-      <Flex gap="3">
-        <IssueStatusBadge status={issue.status} />
-        <Text>{issue.createdAt.toDateString()}</Text>
-      </Flex>
-      <Card className="prose">
-        <ReactMarkdown>{issue.description}</ReactMarkdown>
-      </Card>
-    </Flex>
+    <Grid columns={{ initial: "1", sm: "5" }} gap="4">
+      <Box className="md:col-span-4">
+        <IssueDetail issue={issue} />
+      </Box>
+      {session && (
+        <Box>
+          <Flex direction="column" gap="4">
+            <AssigneeSelect issue={issue} />
+            <EditIssueButton issueId={issue.id} />
+            <DeleteIssueButton issueId={issue.id} />
+          </Flex>
+        </Box>
+      )}
+    </Grid>
   );
 };
+
+export async function generateMetadata({ params }: Props) {
+  const { id } = await params;
+  const issue = await fetchIssue(parseInt(id));
+
+  return {
+    title: `Issue - ${issue?.title}`,
+    description: `Description of Issue ${issue?.title}`,
+  };
+}
 
 export default IssueDetailPage;

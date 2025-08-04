@@ -1,13 +1,15 @@
+import "@radix-ui/themes/styles.css";
+import "./globals.css";
+
+import { Inter } from "next/font/google";
+
+import { Container, Theme } from "@radix-ui/themes";
+
+import AuthProvider from "./auth/Provider";
+import NavBar from "./NavBar";
+import QueryClientProvider from "./QueryClientProvider";
+
 import type { Metadata } from "next";
-import '@radix-ui/themes/styles.css';
-import './globals.css';
-
-import { Inter } from 'next/font/google';
-
-import { Theme, ThemePanel } from '@radix-ui/themes';
-
-import NavBar from './NavBar';
-
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -25,13 +27,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} antialiased`}>
-        <Theme accentColor="violet">
-          <NavBar />
-          <main className="px-4">{children}</main>
-          {/* <ThemePanel /> */}
-        </Theme>
-      </body>
+      <QueryClientProvider>
+        <body className={`${inter.variable} antialiased`}>
+          <AuthProvider>
+            <Theme accentColor="violet">
+              <NavBar />
+              <main className="px-4">
+                <Container>{children}</Container>
+              </main>
+              {/* <ThemePanel /> */}
+            </Theme>
+          </AuthProvider>
+        </body>
+      </QueryClientProvider>
     </html>
   );
 }
